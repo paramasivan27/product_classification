@@ -2,9 +2,21 @@ from __future__ import annotations
 
 import argparse
 import os
-from typing import Optional
+from typing import Optional, List
 
 from .taxonomy import TAXONOMY_KEYWORDS
+
+
+def _keyword_based_classification(text: str) -> str:
+    """Classify using simple keyword matching."""
+    scores = {}
+    for category, keywords in TAXONOMY_KEYWORDS.items():
+        scores[category] = sum(1 for kw in keywords if kw in text)
+
+    best_category = max(scores, key=scores.get)
+    if scores[best_category] == 0:
+        return "Unknown"
+    return best_category
 
 
 def identify_google_taxonomy(title: str, description: str, size: str = "", image_path: Optional[str] = None) -> str:
@@ -26,17 +38,23 @@ def identify_google_taxonomy(title: str, description: str, size: str = "", image
     if image_path and not os.path.exists(image_path):
         raise FileNotFoundError(f"Image file not found: {image_path}")
 
-    scores = {}
-    for category, keywords in TAXONOMY_KEYWORDS.items():
-        scores[category] = sum(1 for kw in keywords if kw in text)
+    categories: List[str] = list(TAXONOMY_KEYWORDS.keys())
+    try:
+        from transformers import pipeline  # type: ignore
 
-    # Determine the category with the highest score
-    best_category = max(scores, key=scores.get)
+        classifier = pipeline(
+            "zero-shot-classification",
+            model="facebook/bart-large-mnli",
+        )
+        result = classifier(text, categories)
+        if result and "labels" in result and result["labels"]:
+            return result["labels"][0]
+    except Exception:
+        # Any failure (e.g. transformers not installed or model download issue)
+        # falls back to rule-based classification.
+        pass
 
-    if scores[best_category] == 0:
-        return "Unknown"
-
-    return best_category
+    return _keyword_based_classification(text)
 
 
 def main(argv: Optional[list[str]] = None) -> None:
