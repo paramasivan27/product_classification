@@ -23,3 +23,12 @@ Run the unit tests using `pytest`:
 ```bash
 pytest
 ```
+
+## Streamlit UI
+
+Install the optional dependency `streamlit` and launch the interactive interface:
+
+```bash
+pip install streamlit
+streamlit run product_classifier/streamlit_ui.py
+```
