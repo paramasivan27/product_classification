@@ -1,6 +1,9 @@
 import streamlit as st
 
-from .classifier import identify_google_taxonomy
+try:
+    from .classifier import identify_google_taxonomy
+except ImportError:  # pragma: no cover - fallback when run as a script
+    from product_classifier.classifier import identify_google_taxonomy
 
 
 def main() -> None:
