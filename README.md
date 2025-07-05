@@ -32,3 +32,18 @@ Install the optional dependency `streamlit` and launch the interactive interface
 pip install streamlit
 streamlit run product_classifier/streamlit_ui.py
 ```
+
+## Docker
+
+Use docker-compose to build the image and run the Streamlit interface:
+
+```bash
+docker-compose up --build
+```
+
+Once running, open http://localhost:8501 in your browser. You can also run the
+CLI inside the container:
+
+```bash
+docker compose run --rm app python -m product_classifier.classifier --title "Men's Running Shoes" --description "Comfortable athletic shoes" --size "US 10"
+```
