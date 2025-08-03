@@ -1,7 +1,0 @@
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - '8501:8501'
-    command: streamlit run product_classifier/streamlit_ui.py --server.port 8501 --server.address 0.0.0.0

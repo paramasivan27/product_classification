@@ -1,49 +1,58 @@
-# product_classification
+# AI Retail Product Classification
 
-This project provides a product classifier that attempts to map retail products to the Google product taxonomy. By default the classifier uses an open source language model to perform zero-shot classification and falls back to a simple keyword based approach if the model or its dependencies are unavailable.
+This repository contains a sophisticated product classification system that uses advanced NLP models to categorize retail products into predefined categories.
 
-## Installation
+## Quick Start
 
-Install the optional dependency `transformers` to enable the language model based classifier:
+The main application is located in the `product_classifier/` directory. Please refer to the [product_classifier/README.md](product_classifier/README.md) for detailed documentation.
 
-```bash
-pip install transformers
-```
-
-After installing, run the classifier directly with Python 3.
+### Quick Commands
 
 ```bash
-python -m product_classifier.classifier --title "Men's Running Shoes" --description "Comfortable athletic shoes" --size "US 10"
-```
+# Navigate to the application directory
+cd product_classifier
 
-## Testing
+# Install dependencies
+pip install -r requirements.txt
 
-Run the unit tests using `pytest`:
+# Run the web interface
+streamlit run streamlit_ui.py
 
-```bash
-pytest
-```
-
-## Streamlit UI
-
-Install the optional dependency `streamlit` and launch the interactive interface:
-
-```bash
-pip install streamlit
-streamlit run product_classifier/streamlit_ui.py
-```
-
-## Docker
-
-Use docker-compose to build the image and run the Streamlit interface:
-
-```bash
+# Or run with Docker
 docker-compose up --build
 ```
 
-Once running, open http://localhost:8501 in your browser. You can also run the
-CLI inside the container:
+## Project Structure
 
-```bash
-docker compose run --rm app python -m product_classifier.classifier --title "Men's Running Shoes" --description "Comfortable athletic shoes" --size "US 10"
 ```
+product_classification/
+├── product_classifier/          # Main application directory
+│   ├── classifier.py           # Core classification logic
+│   ├── taxonomy.py            # Product categories and keywords
+│   ├── streamlit_ui.py        # Web interface
+│   ├── requirements.txt       # Python dependencies
+│   ├── Dockerfile            # Docker configuration
+│   ├── docker-compose.yml    # Docker Compose configuration
+│   └── README.md            # Detailed documentation
+└── tests/                    # Test files
+    └── test_classifier.py
+```
+
+## Features
+
+- **Advanced NLP Models**: Uses sentence transformers for semantic understanding
+- **Comprehensive Categories**: 10 major product categories with detailed keywords
+- **Fallback System**: Automatic fallback to keyword matching if ML models fail
+- **Modern UI**: Beautiful Streamlit interface with examples and detailed results
+- **Docker Support**: Easy deployment with Docker and Docker Compose
+- **CLI Interface**: Command-line tool for batch processing
+
+## Documentation
+
+For complete documentation, installation instructions, and usage examples, please see:
+
+**[product_classifier/README.md](product_classifier/README.md)**
+
+## License
+
+This project is licensed under the MIT License. 
